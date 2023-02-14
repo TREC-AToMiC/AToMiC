@@ -37,11 +37,10 @@ Note that we set `Introduction` for as the section title for leading sections.
 ## Image collection
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Images-v0.2)
 
-The files are in parquet format.
-Each row in the file corresponds to a image crawled from the Wikicommon database.
-The images are stored as the bytes of the `PIL.WebPImagePlugin.WebPImageFile` object.
-Other than the images, we also provide other metadata such as reference, alt-text, and attribution captions.
-The langauge field contains the list of `language_id' corresponding to which language of Wikipedia is the captions coming from.
+The data files are stored in the Parquet format. Each row in the file represents an image that has been crawled from the Wikimedia Commons database. 
+The image data is stored as bytes of a `PIL.WebPImagePlugin.WebPImageFile object`.
+In addition to the image data, the files also contain other metadata, including a `reference` , `alt-text`, and `attribution` captions.
+The `language_id` field provides a list of language identifiers indicating the language of the Wikipedia captions for each image.
 
 ## Sparse relevance judgements
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Qrels-v0.2)
@@ -51,4 +50,5 @@ The relevance judgments are formatted in standard TREC qrels format, as follows:
 text_id Q0 image_id relevance
 ```
 The default setting of the Qrels is for text-to-image retrieval task.
-To faciliate the image-to-text retrieval task, you only need to swap the position of `text_id' and `image_id'.
+Each row in the Qrel file stands for the relavant image--text pairs in the text and image collections.
+To faciliate the image-to-text retrieval task, you only need to swap the position of `text_id` and `image_id`.
