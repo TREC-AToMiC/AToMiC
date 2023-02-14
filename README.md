@@ -32,7 +32,7 @@ Each row in the file corresponds to a Wikipedia section.
 This collection is prepared from the 20221101 English Wikipedia XML dump.
 The basic data fields are: `page_title`, `hierachy`, `section_title`, `context_page_description`, and `context_section_description`.
 There are other fields such as `media`, `category`, and `source_id` for our internal usage.
-Note that we set in default section title as `Introduction` for the leading section.
+Note that we set `Introduction` for as the section title for leading sections.
 
 ## Image collection
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Images-v0.2)
