@@ -27,9 +27,7 @@ print(dataset[0])
 ## Text collection
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Texts-v0.2)
 
-The files are in parquet format.
-Each row in the file corresponds to a Wikipedia section.
-This collection is prepared from the 20221101 English Wikipedia XML dump.
+The files are stored in Parquet format. Each row in the file corresponds to a Wikipedia section prepared from the 20221101 English Wikipedia XML dump.
 The basic data fields are: `page_title`, `hierachy`, `section_title`, `context_page_description`, and `context_section_description`.
 There are other fields such as `media`, `category`, and `source_id` for our internal usage.
 Note that we set `Introduction` for as the section title for leading sections.
