@@ -31,14 +31,15 @@ The files are stored in Parquet format. Each row in the file corresponds to a Wi
 The basic data fields are: `page_title`, `hierachy`, `section_title`, `context_page_description`, and `context_section_description`.
 There are other fields such as `media`, `category`, and `source_id` for our internal usage.
 Note that we set `Introduction` for as the section title for leading sections.
+The total size of the text collection is approximately 14 GB.
 
 ## Image collection
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Images-v0.2)
 
-The data files are stored in the Parquet format. Each row in the file represents an image that has been crawled from the Wikimedia Commons database. 
-The image data is stored as bytes of a `PIL.WebPImagePlugin.WebPImageFile object`.
-In addition to the image data, the files also contain other metadata, including a `reference` , `alt-text`, and `attribution` captions.
-The `language_id` field provides a list of language identifiers indicating the language of the Wikipedia captions for each image.
+The images are stored in the Parquet format, with each row representing an image that has been crawled from the Wikimedia Commons database.
+The image data is stored as bytes of a `PIL.WebPImagePlugin.WebPImageFile` object, along with other metadata including `reference`, `alt-text`, and `attribution` captions. 
+Additionally, the `language_id` field provides a list of language identifiers indicating the language of the Wikipedia captions for each image.
+Please note that the total size of the image collection is approximately 180 GB.
 
 ## Sparse relevance judgements
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Qrels-v0.2)
@@ -50,3 +51,12 @@ text_id Q0 image_id relevance
 The default setting of the Qrels is for text-to-image retrieval task.
 Each row in the Qrel file stands for the relavant image--text pairs in the text and image collections.
 To faciliate the image-to-text retrieval task, you only need to swap the position of `text_id` and `image_id`.
+
+## Getting Started
+We can use HuggingFace's _Datasets_ and _Transformers_ to explore the AToMiC Dataset.
+You can find their great documentation in the following links: 
+- [Transformers](https://huggingface.co/transformers/index.html)
+- [Datasets](https://huggingface.co/docs/datasets/index.html)
+
+To get started with AToMiC Dataset, we refer you to the following locations:
+- [Notebooks](https://github.com/TREC-AToMiC/AToMiC/tree/main/notebooks): a series notebooks for playing with AToMiC with 🤗 _Datasets_ and _Transformers_
