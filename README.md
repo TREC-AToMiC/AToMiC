@@ -24,6 +24,15 @@ dataset = load_dataset("TREC-AToMiC/AToMiC-Images-v0.2", split='train')
 print(dataset[0])
 ```
 
+## Getting Started
+We can use HuggingFace's _Datasets_ and _Transformers_ to explore the AToMiC Dataset.
+You can find their great documentation in the following links: 
+- [Transformers](https://huggingface.co/transformers/index.html): >=4.26.0
+- [Datasets](https://huggingface.co/docs/datasets/index.html): >=2.8.0
+
+To get started with AToMiC Dataset, we refer you to the following locations:
+- [Notebooks](https://github.com/TREC-AToMiC/AToMiC/tree/main/notebooks): a series notebooks for playing with AToMiC with 🤗 _Datasets_ and _Transformers_
+
 ## Text collection
 [🤗 Datasets](https://huggingface.co/datasets/TREC-AToMiC/AToMiC-Texts-v0.2)
 
@@ -52,11 +61,3 @@ The default setting of the Qrels is for text-to-image retrieval task.
 Each row in the Qrel file stands for the relavant image--text pairs in the text and image collections.
 To faciliate the image-to-text retrieval task, you only need to swap the position of `text_id` and `image_id`.
 
-## Getting Started
-We can use HuggingFace's _Datasets_ and _Transformers_ to explore the AToMiC Dataset.
-You can find their great documentation in the following links: 
-- [Transformers](https://huggingface.co/transformers/index.html)
-- [Datasets](https://huggingface.co/docs/datasets/index.html)
-
-To get started with AToMiC Dataset, we refer you to the following locations:
-- [Notebooks](https://github.com/TREC-AToMiC/AToMiC/tree/main/notebooks): a series notebooks for playing with AToMiC with 🤗 _Datasets_ and _Transformers_
