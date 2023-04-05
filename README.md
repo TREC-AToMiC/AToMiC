@@ -1,16 +1,11 @@
 # AToMiC
-A Text/Image Retrieval Test Collection to Support Multimedia Content Creation
+The AToMiC dataset is a large-scale image/text retrieval test collection designed to aid in multimedia content creation.
+The dataset is composed of approximately 10 million images and texts, and there are 4 million image--text binary relevance judgments available.
+We formulate two retrieval tasks: image suggestion and image promotion. 
+The objectives of these tasks are to identify images that complement the textual content and identify text that corresponds to the image.
 
-Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
-
-This work is licensed under a
-[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
-
-[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
-
-[cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
-[cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
-[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+Learn more about AToMiC Dataset from our [arxiv paper](https://arxiv.org/abs/2304.01961).
+![AToMiC](asset/teaser.pdf)
 
 ## Usage
 ```
@@ -61,3 +56,39 @@ The default setting of the Qrels is for text-to-image retrieval task.
 Each row in the Qrel file stands for the relavant image--text pairs in the text and image collections.
 To faciliate the image-to-text retrieval task, you only need to swap the position of `text_id` and `image_id`.
 
+## Citations
+If you find this resource useful, please consider citing our paper and the WIT paper.
+
+```bibtex
+@article{yang2023atomic,
+      title={AToMiC: An Image/Text Retrieval Test Collection to Support Multimedia Content Creation}, 
+      author={Jheng-Hong Yang and Carlos Lassance and Rafael Sampaio de Rezende and Krishna Srinivasan and Miriam Redi and Stéphane Clinchant and Jimmy Lin},
+      journal={arXiv preprint 2304.01961},
+      year={2023},
+}
+```
+
+```bibtex
+@article{srinivasan2021wit,
+  title={WIT: Wikipedia-based Image Text Dataset for Multimodal Multilingual Machine Learning},
+  author={Srinivasan, Krishna and Raman, Karthik and Chen, Jiecao and Bendersky, Michael and Najork, Marc},
+  journal={arXiv preprint arXiv:2103.01913},
+  year={2021}
+}
+```
+
+## License
+
+Shield: [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
+
+This work is licensed under a
+[Creative Commons Attribution-ShareAlike 4.0 International License][cc-by-sa].
+
+[![CC BY-SA 4.0][cc-by-sa-image]][cc-by-sa]
+
+[cc-by-sa]: http://creativecommons.org/licenses/by-sa/4.0/
+[cc-by-sa-image]: https://licensebuttons.net/l/by-sa/4.0/88x31.png
+[cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
+
+## Contact
+If any questions, please contact jheng-hong.yang@uwaterloo.ca or trec-atomic-organizers@googlegroups.com
