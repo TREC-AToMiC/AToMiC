@@ -5,7 +5,8 @@ We formulate two retrieval tasks: image suggestion and image promotion.
 The objectives of these tasks are to identify images that complement the textual content and identify text that corresponds to the image.
 
 Learn more about AToMiC Dataset from our [arxiv paper](https://arxiv.org/abs/2304.01961).
-![AToMiC](asset/teaser.pdf)
+
+![AToMiC](asset/teaser.png)
 
 ## Usage
 ```
@@ -91,4 +92,5 @@ This work is licensed under a
 [cc-by-sa-shield]: https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg
 
 ## Contact
-If any questions, please contact jheng-hong.yang@uwaterloo.ca or trec-atomic-organizers@googlegroups.com
+If any questions, please contact:
+jheng-hong.yang@uwaterloo.ca or trec-atomic-organizers@googlegroups.com
