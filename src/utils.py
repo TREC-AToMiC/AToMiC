@@ -24,9 +24,3 @@ def get_cache_dir():
     if custom_dir is not None and custom_dir != "":
         return custom_dir
     return Path(Path.home(), ".cache", "atomic")
-
-def get_cache_dir():
-    custom_dir = os.environ.get("ATOMIC_CACHE")
-    if custom_dir is not None and custom_dir != '':
-        return custom_dir
-    return Path(Path.home(), '.cache', "atomic")
