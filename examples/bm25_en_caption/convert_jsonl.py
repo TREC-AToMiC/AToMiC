@@ -95,7 +95,7 @@ def maybe_shard_to_save(dataset, output_path, num_lines=1000000):
         dataset.to_json(str(output_path))
 
 
-def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_dir):
+def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_path):
     if split == 'other':
         qrels = load_dataset(qrels_ds)
         qrels = concatenate_datasets(
@@ -120,7 +120,7 @@ def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_dir):
         images = images.map(convert_flatten_image, fn_kwargs={'id_col': 'image_id'}, num_proc=16)
         images = images.map(limit_clause, num_proc=16)
         images = images.remove_columns(old_col)
-        maybe_shard_to_save(images, output_dir / 'image-collection' / f'{split}.image-caption.jsonl')
+        maybe_shard_to_save(images, output_path / 'image-collection' / f'{split}.image-caption.jsonl')
 
     elif encode_field == 'text':
         valid_texts = set(qrels.unique('text_id'))
@@ -137,4 +137,4 @@ def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_dir):
         texts = texts.map(convert_flatten_text, fn_kwargs={'id_col': 'text_id'}, num_proc=16)
         texts = texts.map(limit_clause, num_proc=16)
         texts = texts.remove_columns(old_col)
-        maybe_shard_to_save(texts, output_dir / 'text-collection' / f'{split}.text.jsonl')
+        maybe_shard_to_save(texts, output_path / 'text-collection' / f'{split}.text.jsonl')
