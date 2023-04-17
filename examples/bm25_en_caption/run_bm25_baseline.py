@@ -19,7 +19,7 @@ import argparse
 from datasets import load_dataset
 from pyserini.setup import configure_classpath
 
-from convert_jsonl_module import encode
+from convert_jsonl import encode
 
 
 SPLITS = ["train", "validation", "test", "other"]
