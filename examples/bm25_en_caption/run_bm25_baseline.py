@@ -17,7 +17,7 @@ from pathlib import Path
 import argparse
 
 from datasets import load_dataset
-from pyserini.setup import configure_classpath
+from pyserini.pyclass import autoclass
 
 from convert_jsonl import encode
 
@@ -30,7 +30,6 @@ ENCODING_FIELDS = ["text", "image_caption"]
 def get_args_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--pyserini_path", required=True, type=str, help="Path to the Pyserini installation")
-    parser.add_argument("--anserini_fatjar_path", required=True, type=str, help="Path to the Anserini fatjar")
     parser.add_argument("--images", default="TREC-AToMiC/AToMiC-Images-v0.2", type=str)
     parser.add_argument("--texts",  default="TREC-AToMiC/AToMiC-Texts-v0.2", type=str)
     parser.add_argument("--qrels",  default="TREC-AToMiC/AToMiC-Qrels-v0.2", type=str)
@@ -52,8 +51,6 @@ def prep_qrels(qrels_ds, split, pyserini_path):
 
 
 def anserini_index(indexing_args):
-    # this import is deliberately placed here (has to be imported AFTER configure_classpath is run)
-    from jnius import autoclass
     IndexCollection = autoclass("io.anserini.index.IndexCollection")
     IndexCollection.main(indexing_args)
 
@@ -113,8 +110,6 @@ def create_index(setting, split, pyserini_path):
 
 
 def anserini_search(search_args):
-    # this import is deliberately placed here (has to be imported AFTER configure_classpath is run)
-    from jnius import autoclass
     SearchCollection = autoclass("io.anserini.search.SearchCollection")
     SearchCollection.main(search_args)
 
@@ -166,7 +161,6 @@ def search_anserini(split, setting, pyserini_path):
 
 
 def main(args):
-    configure_classpath(args.anserini_fatjar_path)
     pyserini_path = Path(args.pyserini_path)
 
     for split in SPLITS:
