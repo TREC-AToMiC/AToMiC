@@ -61,7 +61,6 @@ def create_index(setting, split, output_path):
     postfix = "." + split if setting == "small" else ""
 
     # create a directory that contains the documents we want to index
-    # NOTE: should we consider cleaning up this directory once we are done indexing?
     text_dir = output_path / f"text-collection.{setting}{postfix}"
     text_dir.mkdir(exist_ok=True)
 
@@ -148,19 +147,6 @@ def search_anserini(split, setting, output_path):
     ]
     anserini_search(t2i_search_args)
 
-    """
-    TODO: seprate out this logic for evaluating in a different script
-    echo "==== Text2Image ===="
-    t2i_qrel="${QREL_DIR}/${SPLIT}.qrels.t2i.projected.trec"
-    $PATH_TREC_EVAL -c -m recip_rank -M 10 ${t2i_qrel} ${t2i_run}
-    $PATH_TREC_EVAL -c -m recall.10,1000 ${t2i_qrel} ${t2i_run} 
-
-    echo "==== Image2Text ===="
-    i2t_qrel="${QREL_DIR}/${SPLIT}.qrels.i2t.projected.trec"
-    $PATH_TREC_EVAL -c -m recip_rank -M 10 ${i2t_qrel} ${i2t_run}
-    $PATH_TREC_EVAL -c -m recall.10,1000 ${i2t_qrel} ${i2t_run}
-    """
-
 
 def main(args):
     output_path = Path(args.output_path)
@@ -189,9 +175,8 @@ def main(args):
 
 
 if __name__ == "__main__":
-    # TODO: maybe can add a command line argument to skip qrels, encoding, indexing
     # Sample run command:
-    # python run_bm25_baseline.py --pyserini_path "/home/kj25lee/scratch/pyserini" --anserini_fatjar_path "/home/kj25lee/scratch/pyserini/resources/jars"
+    # python run_bm25_baseline.py --pyserini_path
     parser = get_args_parser()
     args = parser.parse_args()
     main(args)
