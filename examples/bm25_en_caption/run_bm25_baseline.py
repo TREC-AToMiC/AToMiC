@@ -17,7 +17,6 @@ from pathlib import Path
 import argparse
 
 from datasets import load_dataset
-from pyserini.pyclass import autoclass
 
 from convert_jsonl import encode
 
@@ -51,6 +50,11 @@ def prep_qrels(qrels_ds, split, output_path):
 
 
 def anserini_index(indexing_args):
+    # jnius does not work well with the multiprocess library used by HF datasets,
+    # so only import here where it is needed
+    # https://github.com/kivy/pyjnius/blob/master/docs/source/api.rst#pyjnius-and-threads
+    from pyserini.pyclass import autoclass
+
     IndexCollection = autoclass("io.anserini.index.IndexCollection")
     IndexCollection.main(indexing_args)
 
@@ -111,6 +115,11 @@ def create_index(setting, split, output_path):
 
 
 def anserini_search(search_args):
+    # jnius does not work well with the multiprocess library used by HF datasets,
+    # so only import here where it is needed
+    # https://github.com/kivy/pyjnius/blob/master/docs/source/api.rst#pyjnius-and-threads
+    from pyserini.pyclass import autoclass
+
     SearchCollection = autoclass("io.anserini.search.SearchCollection")
     SearchCollection.main(search_args)
 
