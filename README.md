@@ -23,7 +23,7 @@ print(dataset[0])
 ## Latest Update
 2023 May:
 - [Call for participants](https://trec.nist.gov/pubs/call2023.html): We are excited to announce that we will be hosting a dedicated track at the TREC 2023 workshop. We invite all interested participants to submit their runs and join us.
-- Text collection update: We have addressed the missing entity issues in our text collection and have released an updated version, `AToMiC-Text-v0.2.1`. For those interested in participating in the TREC2023 evaluation, please use this version. If you wish to reproduce the results presented in our SIGIR paper, please use `AToMiC-Text-v0.2`. We have created a spreadsheet highlighting the differences in retrieval effectiveness between the two versions, which can be found [here](https://docs.google.com/spreadsheets/d/1wSi_79Qx3GA1WAirwvoapiWJ4m2bPRM_rtUWRZ2qRIo/edit?usp=sharing).
+- Text collection update: We have addressed the missing entity issues in our text collection and have released an updated version, `AToMiC-Texts-v0.2.1`. For those interested in participating in the TREC2023 evaluation, please use this version. If you wish to reproduce the results presented in our SIGIR paper, please use `AToMiC-Texts-v0.2`. We have created a spreadsheet highlighting the differences in retrieval effectiveness between the two versions, which can be found [here](https://docs.google.com/spreadsheets/d/1wSi_79Qx3GA1WAirwvoapiWJ4m2bPRM_rtUWRZ2qRIo/edit?usp=sharing).
 
 ## Getting Started
 We can use HuggingFace's _Datasets_ and _Transformers_ to explore the AToMiC Dataset.
