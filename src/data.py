@@ -74,10 +74,13 @@ class AtomicDataset(Dataset):
             ):
                 if row in train:
                     split_dict["train"].append(index)
-                if row in validation:
+                elif row in validation:
                     split_dict["validation"].append(index)
-                if row in test:
+                elif row in test:
                     split_dict["test"].append(index)
+                else:
+                    split_dict["other"].append(index)
+
             with open(self.cache_split_path, "w") as f:
                 json.dump(split_dict, f)
             return split_dict
