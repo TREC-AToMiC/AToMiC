@@ -15,6 +15,7 @@
 #
 from pathlib import Path
 import argparse
+import json
 
 from datasets import load_dataset
 
@@ -30,7 +31,7 @@ def get_args_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output_path", default=str(Path.cwd()), type=str, help="Path under which output files will be saved")
     parser.add_argument("--images", default="TREC-AToMiC/AToMiC-Images-v0.2", type=str)
-    parser.add_argument("--texts",  default="TREC-AToMiC/AToMiC-Texts-v0.2", type=str)
+    parser.add_argument("--texts",  default="TREC-AToMiC/AToMiC-Texts-v0.2.1", type=str)
     parser.add_argument("--qrels",  default="TREC-AToMiC/AToMiC-Qrels-v0.2", type=str)
     return parser
 
@@ -114,6 +115,21 @@ def create_index(setting, split, output_path):
     anserini_index(image_indexing_args)
 
 
+def process_jsonl_line(line):
+    obj = json.loads(line)
+    return json.dumps({"id": obj["id"], "title": obj["contents"]})
+
+
+def convert_jsonl_for_search(jsonl_file, output_path):
+    from multiprocessing import Pool
+    with open(jsonl_file, "r") as f_in:
+        with open(output_path, "w", encoding="utf-8") as f_out:
+            with Pool(processes=16) as pool:
+                results = pool.map(process_jsonl_line, f_in)
+                for row in results:
+                    f_out.write(row + "\n")
+
+
 def anserini_search(search_args):
     # jnius does not work well with the multiprocess library used by HF datasets,
     # so only import here where it is needed
@@ -136,29 +152,51 @@ def search_anserini(split, setting, output_path):
     t2i_run_dir = runs / f"run.{split}.bm25-anserini-default.t2i.{setting}.trec"
     i2t_run_dir = runs / f"run.{split}.bm25-anserini-default.i2t.{setting}.trec"
 
+    # I2T
     i2t_search_args = [
         "-index", str(text_index_dir.resolve()),
-        "-topics", str((output_path / f"image-collection.{setting}{postfix}/{split}.image-caption.jsonl").resolve()),
+        "-topics", str((output_path / f"image-collection.{setting}{postfix}/{split}.image-caption.search.jsonl").resolve()),
         "-topicreader", "JsonString",
-        "-topicfield", "contents",
+        "-topicfield", "title",
         "-output", str(i2t_run_dir.resolve()),
         "-bm25", "-hits", "1000", "-parallelism", "64", "-threads", "64"
     ]
     anserini_search(i2t_search_args)
 
+    # T2I
     t2i_search_args = [
         "-index", str(image_index_dir.resolve()),
-        "-topics", str((output_path / f"text-collection.{setting}{postfix}/{split}.text.jsonl").resolve()),
+        "-topics", str((output_path / f"text-collection.{setting}{postfix}/{split}.text.search.jsonl").resolve()),
         "-topicreader", "JsonString",
-        "-topicfield", "contents",
+        "-topicfield", "title",
         "-output", str(t2i_run_dir.resolve()),
         "-bm25", "-hits", "1000", "-parallelism", "64", "-threads", "64"
     ]
     anserini_search(t2i_search_args)
 
+    '''We can run the following commands to search using pyserini.search.lucene
+    # I2T
+    simplesearcher_cmd = f"""python -m pyserini.search.lucene \\
+    --index {str(text_index_dir.resolve())} \\
+    --topics {str((output_path / f"image-collection.{setting}{postfix}/{split}.image-caption.search.jsonl").resolve())} \\
+    --output {str(i2t_run_dir.resolve())} \\
+    --bm25 --hits 1000 --threads 16 --batch-size 64"""
+    os.system(simplesearcher_cmd)
+
+    # T2I
+    simplesearcher_cmd = f"""python -m pyserini.search.lucene \\
+    --index {str(image_index_dir.resolve())} \\
+    --topics {str((output_path / f"text-collection.{setting}{postfix}/{split}.text.search.jsonl").resolve())} \\
+    --output {str(t2i_run_dir.resolve())} \\
+    --bm25 --hits 1000 --threads 16 --batch-size 64"""
+    print(f"Running {simplesearcher_cmd}")
+    os.system(simplesearcher_cmd)
+    '''
+
 
 def main(args):
     output_path = Path(args.output_path)
+
     for split in SPLITS:
         if split == "other":
             continue
@@ -178,6 +216,19 @@ def main(args):
         else:
             create_index(setting, None, output_path)
 
+    for setting in SETTINGS:
+        for split in ["validation", "test"]:
+            if setting != "small" and split == "test":
+                continue
+
+            postfix = f".{split}" if setting == "small" else ""
+
+            text_dir = output_path / f"text-collection.{setting}{postfix}"
+            image_dir = output_path / f"image-collection.{setting}{postfix}"
+
+            convert_jsonl_for_search(text_dir / f"{split}.text.jsonl", text_dir / f"{split}.text.search.jsonl")
+            convert_jsonl_for_search(image_dir / f"{split}.image-caption.jsonl", image_dir / f"{split}.image-caption.search.jsonl")
+    
     for setting in SETTINGS:
         print(f"RUN SEARCH, setting: {setting}")
         search_anserini("validation", setting, output_path)
