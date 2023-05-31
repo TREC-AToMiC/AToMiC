@@ -95,9 +95,9 @@ python -m pyserini.eval.trec_eval -c -m recip_rank -M 10 qrels/validation.qrels.
 python -m pyserini.eval.trec_eval -c -m recall.10,1000 qrels/validation.qrels.t2i.projected.trec runs/run.validation.t2i.small.trec
 
 Results:
-recip_rank              all     0.2720
-recall_10               all     0.4470
-recall_1000             all     0.9399
+recip_rank              all     0.1980
+recall_10               all     0.3495
+recall_1000             all     0.9085
 ```
 
 ```bash
@@ -105,8 +105,8 @@ python -m pyserini.eval.trec_eval -c -m recip_rank -M 10 qrels/validation.qrels.
 python -m pyserini.eval.trec_eval -c -m recall.10,1000 qrels/validation.qrels.i2t.projected.trec runs/run.validation.i2t.small.trec
 
 Results:
-recip_rank              all     0.2501
-recall_10               all     0.4058
-recall_1000             all     0.9272
+recip_rank              all     0.1823
+recall_10               all     0.3117
+recall_1000             all     0.8918
 ```
 
