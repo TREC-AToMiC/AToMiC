@@ -42,10 +42,10 @@ def prep_qrels(qrels_ds, split, output_path):
 
     qrel_ds = load_dataset(qrels_ds, split=split)
     qrel_ds.to_csv(
-        qrels_dir / f"{split}.qrels.t2i.projected.trec", header=None, sep=" ", index=False
+        qrels_dir / f"qrels.atomic.{split}.t2i.trec", header=None, sep=" ", index=False
     )
     qrel_ds.to_csv(
-        qrels_dir / f"{split}.qrels.i2t.projected.trec",
+        qrels_dir / f"qrels.atomic.{split}.i2t.trec",
         columns=["image_id", "Q0", "text_id", "rel"], header=None, sep=" ", index=False
     )
 
@@ -155,7 +155,7 @@ def search_anserini(split, setting, output_path):
     # I2T
     i2t_search_args = [
         "-index", str(text_index_dir.resolve()),
-        "-topics", str((output_path / f"image-collection.{setting}{postfix}/{split}.image-caption.search.jsonl").resolve()),
+        "-topics", str((output_path / f"image-collection.{setting}{postfix}/topics.atomic.{split}.image-caption.jsonl").resolve()),
         "-topicreader", "JsonString",
         "-topicfield", "title",
         "-output", str(i2t_run_dir.resolve()),
@@ -166,7 +166,7 @@ def search_anserini(split, setting, output_path):
     # T2I
     t2i_search_args = [
         "-index", str(image_index_dir.resolve()),
-        "-topics", str((output_path / f"text-collection.{setting}{postfix}/{split}.text.search.jsonl").resolve()),
+        "-topics", str((output_path / f"text-collection.{setting}{postfix}/topics.atomic.{split}.text.jsonl").resolve()),
         "-topicreader", "JsonString",
         "-topicfield", "title",
         "-output", str(t2i_run_dir.resolve()),
@@ -178,7 +178,7 @@ def search_anserini(split, setting, output_path):
     # I2T
     simplesearcher_cmd = f"""python -m pyserini.search.lucene \\
     --index {str(text_index_dir.resolve())} \\
-    --topics {str((output_path / f"image-collection.{setting}{postfix}/{split}.image-caption.search.jsonl").resolve())} \\
+    --topics {str((output_path / f"image-collection.{setting}{postfix}/topics.atomic.{split}.image-caption.jsonl").resolve())} \\
     --output {str(i2t_run_dir.resolve())} \\
     --bm25 --hits 1000 --threads 16 --batch-size 64"""
     os.system(simplesearcher_cmd)
@@ -186,7 +186,7 @@ def search_anserini(split, setting, output_path):
     # T2I
     simplesearcher_cmd = f"""python -m pyserini.search.lucene \\
     --index {str(image_index_dir.resolve())} \\
-    --topics {str((output_path / f"text-collection.{setting}{postfix}/{split}.text.search.jsonl").resolve())} \\
+    --topics {str((output_path / f"text-collection.{setting}{postfix}/topics.atomic.{split}.text.jsonl").resolve())} \\
     --output {str(t2i_run_dir.resolve())} \\
     --bm25 --hits 1000 --threads 16 --batch-size 64"""
     print(f"Running {simplesearcher_cmd}")
@@ -226,9 +226,9 @@ def main(args):
             text_dir = output_path / f"text-collection.{setting}{postfix}"
             image_dir = output_path / f"image-collection.{setting}{postfix}"
 
-            convert_jsonl_for_search(text_dir / f"{split}.text.jsonl", text_dir / f"{split}.text.search.jsonl")
-            convert_jsonl_for_search(image_dir / f"{split}.image-caption.jsonl", image_dir / f"{split}.image-caption.search.jsonl")
-    
+            convert_jsonl_for_search(text_dir / f"{split}.text.jsonl", text_dir / f"topics.atomic.{split}.text.jsonl")
+            convert_jsonl_for_search(image_dir / f"{split}.image-caption.jsonl", image_dir / f"topics.atomic.{split}.image-caption.jsonl")
+
     for setting in SETTINGS:
         print(f"RUN SEARCH, setting: {setting}")
         search_anserini("validation", setting, output_path)
