@@ -109,8 +109,9 @@ def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_path):
 
         images = load_dataset(image_ds, split='train')
         # remove images for faster processing
-        images = images.remove_columns(['image', 'image_url'])
+        images = images.remove_columns(['image'])
         old_col = images.column_names
+        old_col.remove('image_url')  # keep image url in the indexed docs
 
         if split == 'other':
             images = images.filter(lambda example: example['image_id'] not in valid_images, num_proc=32)
