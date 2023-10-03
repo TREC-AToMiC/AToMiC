@@ -13,13 +13,13 @@
 3. Evaluate using the following commands, replacing `{SPLIT}` and `{SETTING}` appropriately:
 - Text to Image
 ```
-python -m pyserini.eval.trec_eval -c -m recip_rank -M 10 qrels/{SPLIT}.qrels.t2i.projected.trec runs/run.{SPLIT}.bm25-anserini-default.t2i.{SETTING}.trec
-python -m pyserini.eval.trec_eval -c -m recall.10,1000 qrels/{SPLIT}.qrels.t2i.projected.trec runs/run.{SPLIT}.bm25-anserini-default.t2i.{SETTING}.trec
+python -m pyserini.eval.trec_eval -c -m recip_rank -M 10 qrels/qrels.atomic.{SPLIT}.t2i.trec runs/run.{SPLIT}.bm25-anserini-default.t2i.{SETTING}.trec
+python -m pyserini.eval.trec_eval -c -m recall.10,1000 qrels/qrels.atomic.{SPLIT}.t2i.trec runs/run.{SPLIT}.bm25-anserini-default.t2i.{SETTING}.trec
 ```
 - Image to Text
 ```
-python -m pyserini.eval.trec_eval -c -m recip_rank -M 10 qrels/{SPLIT}.qrels.i2t.projected.trec runs/run.{SPLIT}.bm25-anserini-default.i2t.{SETTING}.trec
-python -m pyserini.eval.trec_eval -c -m recall.10,1000 qrels/{SPLIT}.qrels.i2t.projected.trec runs/run.{SPLIT}.bm25-anserini-default.i2t.{SETTING}.trec
+python -m pyserini.eval.trec_eval -c -m recip_rank -M 10 qrels/qrels.atomic.{SPLIT}.i2t.trec runs/run.{SPLIT}.bm25-anserini-default.i2t.{SETTING}.trec
+python -m pyserini.eval.trec_eval -c -m recall.10,1000 qrels/qrels.atomic.{SPLIT}.i2t.trec runs/run.{SPLIT}.bm25-anserini-default.i2t.{SETTING}.trec
 ```
 
 ## Reproduction Log
