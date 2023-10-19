@@ -202,10 +202,12 @@ def main(args):
             continue
         print(f"RUN PREP QRELS, split: {split}")
         prep_qrels(args.qrels, split, output_path)
+
     for split in SPLITS:
         for encoding_field in ENCODING_FIELDS:
             print(f"RUN ENCODE, split: {split}, encoding_field: {encoding_field}")
             encode(split, encoding_field, args.qrels, args.images, args.texts, output_path)
+
     for setting in SETTINGS:
         print(f"RUN CREATE INDEX, setting: {setting}")
         if setting == "small":
