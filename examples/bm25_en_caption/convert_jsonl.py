@@ -83,6 +83,10 @@ def limit_clause(example, limit=1024):
     return {'contents': ' '.join(clauses[:limit])}
 
 
+def augment_image_urls(example, image_id_to_url):
+    return {'id': example['id'], 'contents': example['contents'], 'image_url': image_id_to_url[example['id']]}
+
+
 def maybe_shard_to_save(dataset, output_path, num_lines=1000000):
     output_path.parent.mkdir(parents=True, exist_ok=True)
     if len(dataset) > num_lines:
@@ -109,7 +113,14 @@ def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_path):
 
         images = load_dataset(image_ds, split='train')
         # remove images for faster processing
-        images = images.remove_columns(['image', 'image_url'])
+        images = images.remove_columns(['image'])
+        # save image urls to add on to the data as a separate field later
+        image_id_to_url = {}
+        for row in images:
+            image_id_to_url[row['image_id']] = row['image_url']
+
+        # remove image urls and use the remaining columns as the contents of the image
+        images = images.remove_columns(['image_url'])
         old_col = images.column_names
 
         if split == 'other':
@@ -120,6 +131,7 @@ def encode(split, encode_field, qrels_ds, image_ds, text_ds, output_path):
         images = images.map(convert_flatten_image, fn_kwargs={'id_col': 'image_id'}, num_proc=16)
         images = images.map(limit_clause, num_proc=16)
         images = images.remove_columns(old_col)
+        images = images.map(augment_image_urls, fn_kwargs={'image_id_to_url': image_id_to_url}, num_proc=16)
         maybe_shard_to_save(images, output_path / 'image-collection' / f'{split}.image-caption.jsonl')
 
     elif encode_field == 'text':
